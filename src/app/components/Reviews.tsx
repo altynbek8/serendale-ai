@@ -1,14 +1,36 @@
-// components/Reviews.tsx
 "use client";
-const reviews = [
+
+const reviews =[
   { name: "Alex Riv", role: "Product Designer", text: "The most intuitive AI interface I've used in years. Scalability is no longer a myth.", color: "from-pink-500 to-rose-500" },
   { name: "Sarah J.", role: "Web3 Developer", text: "Integration was seamless. Our TPS increased by 40% in just two weeks of testing.", color: "from-blue-500 to-cyan-500" },
   { name: "Erop V.", role: "Fullstack Dev", text: "Clean code, amazing performance, and the AI features are just mind-blowing.", color: "from-purple-500 to-indigo-500" }
 ];
 
 export default function Reviews() {
+  // Генерируем правильный JSON-LD объект для отзывов о продукте
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Serendale AI",
+    "description": "Next-Gen AI Blockchain Platform",
+    "review": reviews.map((rev) => ({
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": rev.name
+      },
+      "reviewBody": rev.text
+    }))
+  };
+
   return (
-    <section className="py-32 px-6 max-w-[1280px] mx-auto">
+    <section id="reviews" className="py-32 px-6 max-w-[1280px] mx-auto relative">
+      {/* Внедрение микроразметки JSON-LD для поисковиков */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <h2 className="text-4xl md:text-5xl font-medium text-center mb-20 uppercase tracking-widest">
         Community <span className="text-gradient">Voice</span>
       </h2>
@@ -25,7 +47,7 @@ export default function Reviews() {
               </div>
             </div>
             <p className="text-white/70 leading-relaxed italic">
-              "{rev.text}"
+              &quot;{rev.text}&quot;
             </p>
           </div>
         ))}
